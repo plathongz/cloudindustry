@@ -1,0 +1,48 @@
+%%[
+    var @subKey, @hasContact , @getListName , @getListId  , @firstTitle, @FiledId
+
+    /* get plan */
+    IF EMPTY(RequestParameter('subscriberKey')) AND 
+    EMPTY(RequestParameter('pricePlan1')) AND 
+    EMPTY(RequestParameter('pricePlan2')) THEN
+        OUTPUT(CONCAT("Data is wrong"))
+    ELSE
+        set @subKey = RequestParameter('subscriberKey')
+        set @pricePlan1 = RequestParameter('pricePlan1')
+        set @pricePlan2 = RequestParameter('pricePlan2')
+        set @pricePlan3 = RequestParameter('pricePlan3')
+        set @pricePlan4 = RequestParameter('pricePlan4')
+        set @listData = LookupRows('Renewal_B2B_DE_Test',"Id", @subKey)
+        set @countListData = rowcount(@listData)
+        if @countListData > 0 then
+            for @j = 1 to @countListData do
+                set @row = Row(@listData, @j)
+                set @selected_Renewal = Field(@row ,'Selected_Renewal_Plan_Code')
+                set @firstname = Field(@row ,'First_Name__c')
+                set @lastname = Field(@row ,'Last_Name__c')
+                set @address = Field(@row ,'PremissAddress')
+                set @ContractEndDate = Field(@row ,'Contract_End_Date__c')
+                set @accountNumber = Field(@row ,'iSwitch_Account_Number')
+                set @chargeDescription1 = Field(@row ,'Charge_Description_1__c')
+                set @chargeDescription2 = Field(@row ,'Charge_Description_2__c')
+                set @chargeDescription3 = Field(@row ,'Charge_Description_3__c')
+                set @chargeDescription4 = Field(@row ,'Charge_Description_4__c')
+                set @factsheet1 = Field(@row ,'Factsheet_1__c')
+                set @factsheet2 = Field(@row ,'Factsheet_2__c')
+                set @factsheet3 = Field(@row ,'Factsheet_3__c')
+                set @factsheet4 = Field(@row ,'Factsheet_4__c')
+                set @totalSavings = Field(@row ,'Total_Savings__c')
+                
+            next @j 
+
+        set @accountName = Concat(@firstname," ",@lastname)
+        set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
+
+        UpdateData('Renewal_B2B_DE_Test',1,'Id',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
+
+        else 
+            OUTPUT(CONCAT("No data in DE"))
+        endif   
+
+    ENDIF
+]%%
