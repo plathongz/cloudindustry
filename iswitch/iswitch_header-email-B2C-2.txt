@@ -32,6 +32,10 @@
                 set @factsheet3 = Field(@row ,'Factsheet_3__c')
                 set @factsheet4 = Field(@row ,'Factsheet_4__c')
                 set @totalSavings = Field(@row ,'Total_Savings__c')
+	set @pricePlanName1 = Field(@row ,'Price_Plan_Name_1__c')
+                set @pricePlanName2 = Field(@row ,'Price_Plan_Name_2__c')
+                set @pricePlanName3 = Field(@row ,'Price_Plan_Name_3__c')
+                set @pricePlanName4 = Field(@row ,'Price_Plan_Name_4__c')
                 
             next @j 
 
