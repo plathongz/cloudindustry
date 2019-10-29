@@ -12,7 +12,7 @@
         set @pricePlan2 = RequestParameter('pricePlan2')
         set @pricePlan3 = RequestParameter('pricePlan3')
         set @pricePlan4 = RequestParameter('pricePlan4')
-        set @listData = LookupRows('Renewal_B2C_DE',"Id", @subKey)
+        set @listData = LookupRows('Renewal_B2C_DE',"SubscriberKey", @subKey)
         set @countListData = rowcount(@listData)
         if @countListData > 0 then
             for @j = 1 to @countListData do
@@ -42,7 +42,7 @@
         set @accountName = Concat(@firstname," ",@lastname)
         set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
 
-        UpdateData('Renewal_B2C_DE',1,'Id',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
+        UpdateData('Renewal_B2C_DE',1,'SubscriberKey',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
 
         else 
             OUTPUT(CONCAT("No data in DE"))
