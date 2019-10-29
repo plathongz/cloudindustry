@@ -2,16 +2,10 @@
     var @subKey, @hasContact , @getListName , @getListId  , @firstTitle, @FiledId
 
     /* get plan */
-    IF EMPTY(RequestParameter('subscriberKey')) AND 
-    EMPTY(RequestParameter('pricePlan1')) AND 
-    EMPTY(RequestParameter('pricePlan2')) THEN
+    IF EMPTY(RequestParameter('subscriberKey')) THEN
         OUTPUT(CONCAT("Data is wrong"))
     ELSE
         set @subKey = RequestParameter('subscriberKey')
-        set @pricePlan1 = RequestParameter('pricePlan1')
-        set @pricePlan2 = RequestParameter('pricePlan2')
-        set @pricePlan3 = RequestParameter('pricePlan3')
-        set @pricePlan4 = RequestParameter('pricePlan4')
         set @listData = LookupRows('Renewal_B2C_DE',"SubscriberKey", @subKey)
         set @countListData = rowcount(@listData)
         if @countListData > 0 then
@@ -36,6 +30,10 @@
                 set @pricePlanName2 = Field(@row ,'Price_Plan_Name_2__c')
                 set @pricePlanName3 = Field(@row ,'Price_Plan_Name_3__c')
                 set @pricePlanName4 = Field(@row ,'Price_Plan_Name_4__c')
+	set @pricePlan1 = Field(@row ,'Renewal_Price_Plan_1__c')
+	set @pricePlan2 = Field(@row ,'Renewal_Price_Plan_2__c')
+	set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_3__c')
+	set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_4__c')
                 
             next @j 
 
