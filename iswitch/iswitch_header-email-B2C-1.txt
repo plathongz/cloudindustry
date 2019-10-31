@@ -3,9 +3,9 @@
 
     /* get plan */
     IF EMPTY(RequestParameter('subscriberKey')) THEN
-        set @fullname = "iSwitch Mockup Data "
+        set @accountName = "iSwitch Mockup Data "
         set @address = "I Switch Pte Ltd 120 Robinson Road, #14-01, Singapore 068913"
-        set @ContractEndDate = Format(NOW(), "MMMM d, yyyy")
+        set @endContract = Format(NOW(), "MMMM d, yyyy")
         set @accountNumber = "SW0000000001"
         set @chargeDescription1 = "chargeDescription1"
         set @chargeDescription2 = "chargeDescription2"
@@ -15,6 +15,7 @@
         set @pricePlanName2 = "pricePlanName2 "
         set @pricePlanName3 = "pricePlanName3 "
         set @pricePlanName4 = "pricePlanName4 "
+        set @totalSavings = "450"
 
     ELSE
         set @subKey = RequestParameter('subscriberKey')
