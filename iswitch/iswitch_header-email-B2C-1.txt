@@ -3,7 +3,19 @@
 
     /* get plan */
     IF EMPTY(RequestParameter('subscriberKey')) THEN
-        OUTPUT(CONCAT("Data is wrong"))
+        set @fullname = "iSwitch Mockup Data "
+        set @address = "I Switch Pte Ltd 120 Robinson Road, #14-01, Singapore 068913"
+        set @ContractEndDate = Format(NOW(), "MMMM d, yyyy")
+        set @accountNumber = "SW0000000001"
+        set @chargeDescription1 = "chargeDescription1"
+        set @chargeDescription2 = "chargeDescription2"
+        set @chargeDescription3 = "chargeDescription3"
+        set @chargeDescription4 = "chargeDescription4"
+        set @pricePlanName1 = "pricePlanName1 "
+        set @pricePlanName2 = "pricePlanName2 "
+        set @pricePlanName3 = "pricePlanName3 "
+        set @pricePlanName4 = "pricePlanName4 "
+
     ELSE
         set @subKey = RequestParameter('subscriberKey')
         set @listData = LookupRows('Renewal_B2C_DE',"SubscriberKey", @subKey)
