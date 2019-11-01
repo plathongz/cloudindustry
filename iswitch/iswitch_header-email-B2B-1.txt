@@ -2,17 +2,23 @@
     var @subKey, @hasContact , @getListName , @getListId  , @firstTitle, @FiledId
 
     /* get plan */
-    IF EMPTY(RequestParameter('subscriberKey')) AND 
-    EMPTY(RequestParameter('pricePlan1')) AND 
-    EMPTY(RequestParameter('pricePlan2')) THEN
-        OUTPUT(CONCAT("Data is wrong"))
+    IF EMPTY(RequestParameter('subscriberKey')) THEN
+        set @accountName = "iSwitch Mockup Data "
+        set @address = "I Switch Pte Ltd 120 Robinson Road, #14-01, Singapore 068913"
+        set @endContract = Format(NOW(), "MMMM d, yyyy")
+        set @accountNumber = "SW0000000001"
+        set @chargeDescription1 = "chargeDescription1"
+        set @chargeDescription2 = "chargeDescription2"
+        set @chargeDescription3 = "chargeDescription3"
+        set @chargeDescription4 = "chargeDescription4"
+        set @pricePlanName1 = "pricePlanName1 "
+        set @pricePlanName2 = "pricePlanName2 "
+        set @pricePlanName3 = "pricePlanName3 "
+        set @pricePlanName4 = "pricePlanName4 "
+        set @totalSavings = "450"
     ELSE
         set @subKey = RequestParameter('subscriberKey')
-        set @pricePlan1 = RequestParameter('pricePlan1')
-        set @pricePlan2 = RequestParameter('pricePlan2')
-        set @pricePlan3 = RequestParameter('pricePlan3')
-        set @pricePlan4 = RequestParameter('pricePlan4')
-        set @listData = LookupRows('Renewal_B2B_DE_Test',"Id", @subKey)
+        set @listData = LookupRows('Renewal_B2B_DE',"Id", @subKey)
         set @countListData = rowcount(@listData)
         if @countListData > 0 then
             for @j = 1 to @countListData do
@@ -20,9 +26,10 @@
                 set @selected_Renewal = Field(@row ,'Selected_Renewal_Plan_Code')
                 set @firstname = Field(@row ,'First_Name__c')
                 set @lastname = Field(@row ,'Last_Name__c')
-                set @address = Field(@row ,'PremissAddress')
+	set @fullname = Field(@row ,'Name')
+                set @address = Field(@row ,'Premise_Address__c')
                 set @ContractEndDate = Field(@row ,'Contract_End_Date__c')
-                set @accountNumber = Field(@row ,'iSwitch_Account_Number')
+                set @accountNumber = Field(@row ,'iSwitch_Customer_Account_Number__c')
                 set @chargeDescription1 = Field(@row ,'Charge_Description_1__c')
                 set @chargeDescription2 = Field(@row ,'Charge_Description_2__c')
                 set @chargeDescription3 = Field(@row ,'Charge_Description_3__c')
@@ -32,13 +39,21 @@
                 set @factsheet3 = Field(@row ,'Factsheet_3__c')
                 set @factsheet4 = Field(@row ,'Factsheet_4__c')
                 set @totalSavings = Field(@row ,'Total_Savings__c')
+	set @pricePlanName1 = Field(@row ,'Price_Plan_Name_1__c')
+                set @pricePlanName2 = Field(@row ,'Price_Plan_Name_2__c')
+                set @pricePlanName3 = Field(@row ,'Price_Plan_Name_3__c')
+                set @pricePlanName4 = Field(@row ,'Price_Plan_Name_4__c')
+	set @pricePlan1 = Field(@row ,'Renewal_Price_Plan_1__c')
+	set @pricePlan2 = Field(@row ,'Renewal_Price_Plan_2__c')
+	set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_3__c')
+	set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_4__c')
                 
             next @j 
 
-        set @accountName = Concat(@firstname," ",@lastname)
+        set @accountName = @fullname
         set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
 
-        UpdateData('Renewal_B2B_DE_Test',1,'Id',@subKey,'Open_LP1',1,'Open_LP1_Time',NOW())
+        UpdateData('Renewal_B2B_DE',1,'Id',@subKey,'Open_LP1',1,'Open_LP1_Time',NOW())
 
         else 
             OUTPUT(CONCAT("No data in DE"))
