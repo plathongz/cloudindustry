@@ -18,7 +18,7 @@
         set @totalSavings = "450"
     ELSE
         set @subKey = RequestParameter('subscriberKey')
-        set @listData = LookupRows('Renewal_B2B_DE',"Id", @subKey)
+        set @listData = LookupRows('Renewal_B2B_DE',"SubscriberKey", @subKey)
         set @countListData = rowcount(@listData)
         if @countListData > 0 then
             for @j = 1 to @countListData do
@@ -53,7 +53,7 @@
         set @accountName = Concat(@firstname," ",@lastname)
         set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
 
-        UpdateData('Renewal_B2B_DE',1,'Id',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
+        UpdateData('Renewal_B2B_DE',1,'SubscriberKey',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
 
         else 
             OUTPUT(CONCAT("No data in DE"))
