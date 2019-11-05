@@ -15,6 +15,10 @@
         set @pricePlanName2 = "pricePlanName2 "
         set @pricePlanName3 = "pricePlanName3 "
         set @pricePlanName4 = "pricePlanName4 "
+        set @pricePlan1 = "pricePlanName1"
+        set @pricePlan2 = "pricePlanName2"
+        set @pricePlan3 = "pricePlanName3"
+        set @pricePlan4 = "pricePlanName4"
         set @totalSavings = "450"
         set @company = "Company Mockup"
     ELSE
