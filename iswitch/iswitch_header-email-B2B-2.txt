@@ -16,6 +16,7 @@
         set @pricePlanName3 = "pricePlanName3 "
         set @pricePlanName4 = "pricePlanName4 "
         set @totalSavings = "450"
+        set @company = "Company Mockup"
     ELSE
         set @subKey = RequestParameter('subscriberKey')
         set @listData = LookupRows('Renewal_B2B_DE',"SubscriberKey", @subKey)
@@ -47,6 +48,7 @@
 	set @pricePlan2 = Field(@row ,'Renewal_Price_Plan_6__c')
 	set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_7__c')
 	set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_8__c')
+                set @company = Field(@row ,'Company__c')
                 
             next @j 
 
