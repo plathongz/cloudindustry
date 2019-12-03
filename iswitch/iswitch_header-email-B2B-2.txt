@@ -57,7 +57,7 @@
                 
             next @j 
 
-        set @accountName = Concat(@firstname," ",@lastname)
+        set @accountName = @fullname
         set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
 
         UpdateData('Renewal_B2B_DE',1,'Id',@Id,'Open_LP2',1,'Open_LP2_Time',NOW())

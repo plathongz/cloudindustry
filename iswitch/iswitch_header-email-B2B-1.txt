@@ -59,6 +59,7 @@
                 output(concat("<br> ID: ",@pricePlanName2))
                 output(concat("<br> ID: ",@pricePlanName3))
                 output(concat("<br> ID: ",@pricePlanName4))
+                
             next @j 
 
         set @accountName = @fullname
