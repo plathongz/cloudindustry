@@ -54,12 +54,7 @@
                 set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_3__c')
                 set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_4__c')
                 set @company = Field(@row ,'Company__c')
-                output(concat("<br> ID: ",@Id))
-                output(concat("<br> ID: ",@pricePlanName1))
-                output(concat("<br> ID: ",@pricePlanName2))
-                output(concat("<br> ID: ",@pricePlanName3))
-                output(concat("<br> ID: ",@pricePlanName4))
-                
+
             next @j 
 
         set @accountName = @fullname
