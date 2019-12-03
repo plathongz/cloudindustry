@@ -23,7 +23,8 @@
         set @company = "Company Mockup"
     ELSE
         set @subKey = RequestParameter('subscriberKey')
-        set @listData = LookupRows('Renewal_B2B_DE',"SubscriberKey", @subKey)
+        set @Id = RequestParameter('customerRenewalPricePlansId')
+        set @listData = LookupRows('Renewal_B2B_DE',"Id", @Id)
         set @countListData = rowcount(@listData)
         if @countListData > 0 then
             for @j = 1 to @countListData do
@@ -31,7 +32,7 @@
                 set @selected_Renewal = Field(@row ,'Selected_Renewal_Plan_Code')
                 set @firstname = Field(@row ,'First_Name__c')
                 set @lastname = Field(@row ,'Last_Name__c')
-	set @fullname = Field(@row ,'Name')
+	            set @fullname = Field(@row ,'Name')
                 set @address = Field(@row ,'Premise_Address__c')
                 set @ContractEndDate = Field(@row ,'Contract_End_Date__c')
                 set @accountNumber = Field(@row ,'iSwitch_Customer_Account_Number__c')
@@ -39,19 +40,19 @@
                 set @chargeDescription2 = Field(@row ,'Charge_Description_6__c')
                 set @chargeDescription3 = Field(@row ,'Charge_Description_7__c')
                 set @chargeDescription4 = Field(@row ,'Charge_Description_8__c')
-	set @factsheet1 = Field(@row ,'Factsheet_5__c')
+	            set @factsheet1 = Field(@row ,'Factsheet_5__c')
                 set @factsheet2 = Field(@row ,'Factsheet_6__c')
                 set @factsheet3 = Field(@row ,'Factsheet_7__c')
                 set @factsheet4 = Field(@row ,'Factsheet_8__c')
                 set @totalSavings = Field(@row ,'Total_Savings__c')
-	set @pricePlanName1 = Field(@row ,'Price_Plan_Name_5__c')
+	            set @pricePlanName1 = Field(@row ,'Price_Plan_Name_5__c')
                 set @pricePlanName2 = Field(@row ,'Price_Plan_Name_6__c')
                 set @pricePlanName3 = Field(@row ,'Price_Plan_Name_7__c')
                 set @pricePlanName4 = Field(@row ,'Price_Plan_Name_8__c')
-	set @pricePlan1 = Field(@row ,'Renewal_Price_Plan_5__c')
-	set @pricePlan2 = Field(@row ,'Renewal_Price_Plan_6__c')
-	set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_7__c')
-	set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_8__c')
+                set @pricePlan1 = Field(@row ,'Renewal_Price_Plan_5__c')
+                set @pricePlan2 = Field(@row ,'Renewal_Price_Plan_6__c')
+                set @pricePlan3 = Field(@row ,'Renewal_Price_Plan_7__c')
+                set @pricePlan4 = Field(@row ,'Renewal_Price_Plan_8__c')
                 set @company = Field(@row ,'Company__c')
                 
             next @j 
@@ -59,7 +60,7 @@
         set @accountName = Concat(@firstname," ",@lastname)
         set @endContract = Format(@ContractEndDate, "MMMM d, yyyy")
 
-        UpdateData('Renewal_B2B_DE',1,'SubscriberKey',@subKey,'Open_LP2',1,'Open_LP2_Time',NOW())
+        UpdateData('Renewal_B2B_DE',1,'Id',@Id,'Open_LP2',1,'Open_LP2_Time',NOW())
 
         else 
             OUTPUT(CONCAT("No data in DE"))
