@@ -1,0 +1,8 @@
+<script language="javascript" runat="server">
+   Platform.Load("Core", "1.1.1");
+    var allLists = List.Retrieve();
+    for(var i in allLists) {
+        Write('listId : ' + allLists[i].ID + ' | listname : ' +  allLists[i].ListName );
+        Write('<br>');
+    };
+</script>

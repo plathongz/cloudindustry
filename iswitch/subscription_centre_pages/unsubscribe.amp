@@ -1,0 +1,316 @@
+%%[ 
+var @sk
+set @sk =  _subscriberKey
+]%%
+
+<script language="javascript" runat="server">
+Platform.Load('core','1.1.5');
+var prox = new Script.Util.WSProxy();
+
+var jobid = Attribute.GetValue('jobid');
+var sk = Attribute.GetValue('_subscriberKey');
+
+// Get Email Send Lists 
+var cols = ['List.ID', 'List.ListName'];
+
+var filter = {
+    Property: 'SendID',
+    SimpleOperator: 'equals',
+    Value: jobid
+    };
+
+var result = prox.retrieve('ListSend', cols, filter);
+var countList = 0;
+for (var i = 0; i < result.Results.length; i++) {
+    
+        //listNames.push(result.Results[i].List.ListName);
+        //listIds = listIds + result.Results[i].List.ID + "|";
+        if(result.Results[i].List.ListName == "All Subscribers"){
+            countList++;
+        }
+    
+        var sub = {
+            SubscriberKey: sk,
+            Lists: [{
+                ID: result.Results[i].List.ID,
+                Status: 'Unsubscribed'
+            }]
+        };
+        var options = { 
+            SaveOptions: [{
+            PropertyName: "*",
+            SaveAction: "UpdateAdd"
+            }]
+        };
+
+        var resp = prox.updateItem("Subscriber", sub, options);
+
+    };
+    Variable.SetValue("@countList",countList); 
+}
+</script>
+
+%%[
+    IF(@countList == 1) THEN
+        set @updSubcriber = CreateObject("Subscriber")
+        SetObjectProperty(@updSubcriber, "SubscriberKey", @sk)
+        SetObjectProperty(@updSubcriber, "Status", "Unsubscribed")
+
+        set @updateOptions = CreateObject("UpdateOptions")
+        set @saveOptions = CreateObject("SaveOption")
+        SetObjectProperty(@saveOptions,"SaveAction","UpdateAdd")
+        SetObjectProperty(@saveOptions,"PropertyName","*")
+        AddObjectArrayItem(@updateOptions,"SaveOptions", @saveOptions)
+
+        set @updateStatusCode = InvokeUpdate(@updSubcriber, @updateStatusMessage, @updateErrorCode, @updateOptions)
+    ENDIF
+]%%
+
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,800&display=swap");
+    @import url("https://fonts.googleapis.com/css?family=Muli");
+
+      body {
+        font-family: 'Muli', sans-serif;
+        padding:0;
+        margin: 0px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 { clear: both; color: #202020; line-height: 1; font-style: normal; font-family: Montserrat, sans-serif; font-weight: bold !important; }
+    h1 { font-size: 42px; font-family: Montserrat, sans-serif; color: #1B3572; line-height: 1; font-weight: bold; font-style: normal; }
+    h2 { font-size: 36px; font-family: Montserrat, sans-serif; color: #202020; line-height: 1; font-weight: bold; font-style: normal; }
+    h3 { font-size: 20px; font-family: Montserrat, sans-serif; color: #202020; line-height: 1; font-weight: bold; font-style: normal; }
+    h4 { font-size: 21px; font-family: Montserrat, sans-serif; color: #1B3572; line-height: 1; font-weight: bold; font-style: normal; }
+    h5 { font-size: 18px !important; }
+    a { color: #1b3572 !important}
+
+    .formElement input{
+        border: none;
+        background: #f6f6f6;
+        padding: 4px 10px;
+        
+    }
+    .input{
+        width:100%;
+    }
+    .Header{
+        background: #FFFFFF;
+        color:#fff;
+    }
+    .Header{
+        padding:.75rem 0;
+        text-align:center;
+    }
+    .tabs{
+        padding:.5rem 0;
+        text-align: center;
+    }
+    .para{
+        padding:.5rem 0;
+        color:#717171;
+    }
+    label{
+        color:#717171;
+    }
+    .formElement{
+        padding:12px 0;
+    }
+    .checkBox{
+        padding-top:.5rem;
+        padding-bottom: 1.5rem;
+    }
+    .Btn{
+        padding:1.5rem 0;
+    }
+    .container{
+        margin:0 auto;
+        width: 100%;
+        max-width:1200px;
+    }
+
+    .updateBtn{
+    padding: 10px 40px;
+    background: #34bd76;
+    color: #fff !important;
+    border: none;
+    border-radius: 20px;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+
+    }
+    .Footer{
+        height:60px;
+        
+    }
+    .Footer .GIT{
+        font-size: 13px;
+        margin: 0  0 10px;
+        padding-top: 10px;
+    }
+    .ColHalf,.ColHalf2{
+        width:50%;
+        float: left;
+    }
+    .ColHalf2{text-align: right;}
+    .formElement {
+        width: 100%;
+        max-width: 325px;
+    }
+    .formWrapper{
+        width:100%;
+        border-bottom: 1px solid #FFFFFF;
+    }
+    .checkBox{
+        border-bottom: 1px solid #FFFFFF;
+    }
+    .tabs{
+        background: #20a6f3;
+    }
+    .commenTab.showSecActive{
+        display:block;
+    }
+    .commenTab{
+        display:none
+    }
+    .tabs a.active{
+        color: #1b3572;
+        text-decoration:none;
+    }
+    .mainBodyWrap{
+       height: 100% !important;
+       flex: 1;
+
+      
+    }
+    .tabs a:hover,.tabs a{
+        color:#ffffff;
+        text-decoration:none;
+    }
+    .tabs span{
+        color:#1b3572;
+    }
+    .HeadingPC h3{
+        font-size: 22px;
+        border-bottom: 1px solid #f2f2f2;
+        color: #1b3572;
+        padding: 12px 0;
+    }
+    .mainBodyWrap .notice{
+        font-size: 15px;
+        color: #948f8f;
+    }
+    .form-element{
+        margin: 12px 0;
+    }
+    .Header img{
+        width:100%;
+        max-width: 150px
+    }
+    .Footer{
+        background: #1B3574;
+        color:#fff;
+        padding: 1rem;
+        height: 100px;
+
+       
+    }
+    .Footer .img1 img{
+        width:100%;
+        max-width: 90px
+
+    }
+
+    .Footer p{
+        font-size:10px;
+        color: #ddd;
+    }
+    .ColHalf2 .img2 img{
+        width:100%;
+        max-width: 22px;
+    }
+ </style>
+</head>
+ <body>
+        <div class="Header">
+            <img src="https://image.s11.sfmc-content.com/lib/fe34157175640478731d75/m/1/af89d0f6-5d90-4e45-bd17-a8e8b96c79e3.jpg" />
+        </div>
+        <div class="tabs">
+            <a href="%%=CloudPagesURL(52, 'subscriberKey', _subscriberkey)=%%" class="active">Profile Center</a> <span>|</span> <a href="%%=CloudPagesURL(51, 'subscriberKey', _subscriberkey)=%%">Subscription Center</a>
+        </div>
+  <div class="container mainBodyWrap ">
+   <div style="padding: 1rem;">
+
+            %%[
+                IF NOT EMPTY(@sk) THEN
+            ]%%
+    <div class="commenTab showSecActive" id="Profile_Center">
+     <div class="HeadingPC">
+      <h3>Thank You!</h3>
+     </div>
+     <div class="Col">
+      <p class="para"><strong>You have been unsubscribed from this publication.</strong></p>
+            <span class="notice">&bull; To resubscribe or view and edit your subscriptions to other publications from <strong>iSwitch</strong>, visit the <a href="%%=CloudPagesURL(51, 'subscriberKey', _subscriberkey)=%%" style="color:#5a5a5a">Subscription Center</a>
+            <br><br>
+            <span class="notice">&bull; To view and edit the information you have given us and manage how <strong>iSwitch</strong> communicates with you, visit the <a href="%%=CloudPagesURL(52, 'subscriberKey', _subscriberkey)=%%" style="color:#5a5a5a">Profile Center</a>  
+     </div>
+
+    </div>
+     
+     %%[
+        ELSE
+     ]%%
+        <div class="commenTab showSecActive" id="Profile_Center">
+            <div class="HeadingPC">
+            <h3>Sorry!</h3>
+            </div>
+            <div class="Col">
+            <p class="para"><strong>No SubScriberKey.</strong></p>
+            </div>
+
+            </div>
+            %%[
+                ENDIF
+            ]%%
+      </div>
+        </div>
+          <div class="Footer">
+            <div class="container">
+                <div class="ColHalf">
+                    <div class="img1">
+                      
+                        <br/>
+                        <p style="font-size:13px; rgb(168, 178, 198);">© I Switch Pte Ltd. A Member of RCMA Group Pte. Ltd. | All Rights Reserved</p>
+              
+                    </div>
+                </div>
+                 <div class="ColHalf2">
+                <div>
+                    <p class="GIT">GET IN TOUCH </p>
+
+                    <a href="https://www.facebook.com/iSwitchEnergy/">
+                        <img data-assetid="337" src="https://image.s11.sfmc-content.com/lib/fe34157175640478731d75/m/1/50aed5b1-d881-467a-9465-c2fe82c8148a.png" style="padding: 0px; text-align: center; border: 0px solid transparent; height: 28; width: 28px;"></a>&nbsp;
+                    <a href="https://www.linkedin.com/company/iswitchenergy">
+                        <img data-assetid="337" src="https://image.s11.sfmc-content.com/lib/fe34157175640478731d75/m/1/91b93887-6381-4207-8928-cf09937ae5ac.png" style="padding: 0px; text-align: center; border: 0px solid transparent; height: 28; width: 28px;">&nbsp;</a>
+                    <a href="https://www.youtube.com/channel/UCNeAUuteGFDi9EcOopBVIcQ?view_as=subscriber">
+                        <img data-assetid="337" src="https://image.s11.sfmc-content.com/lib/fe34157175640478731d75/m/1/15c31763-d550-4faa-8aa3-1e760a2f19c6.png" style="padding: 0px; text-align: center; border: 0px solid transparent; height: 28; width: 28px;"></a>&nbsp;
+                    <a href="https://www.instagram.com/iswitchenergy/">
+                        <img data-assetid="337" src="https://image.s11.sfmc-content.com/lib/fe34157175640478731d75/m/1/69d77bd2-11ec-4739-a6b3-25c94510be0b.png" style="padding: 0px; text-align: center; border: 0px solid transparent; height: 28; width: 28px;"></a>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+ </body>
+ <script>
+
+    </script>
+</html>
